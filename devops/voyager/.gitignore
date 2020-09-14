@@ -1,0 +1,4 @@
+bin/backend/logs/apache2/error.log
+bin/backend/logs/apache2/other_vhosts_access.log
+bin/frontend/logs/apache2/error.log
+bin/frontend/logs/apache2/other_vhosts_access.log

@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+    db: # This service *must* be called 'db'
+        build: ./bin/arangodb
+        container_name: 'elymatos-lutma-database'
+        ports:
+            - ${DB_PORT}:8529
+        environment:
+            ARANGO_ROOT_PASSWORD: openSesame
+        volumes:
+            - elymatos_lutma_persistent:/var/lib/arangodb3
+    graphql:
+        build:
+            context: ./bin/frontend
+        container_name: 'elymatos-lutma-frontend'
+        ports:
+            - ${WWW_PORT_FRONTEND}:80
+        volumes:
+            - ${DOCUMENT_ROOT_FRONTEND}:/var/www/html
+            - ${VHOSTS_DIR_FRONTEND-./bin/frontend/config/vhosts}:/etc/apache2/sites-enabled
+            - ${LOG_DIR_FRONTEND-./bin/frontend/logs/apache2}:/var/log/apache2
+        #command: bash -c "cd /var/www/html && yarn install && yarn build  && apache2-foreground"
+        restart: on-failure
+        depends_on:
+            - db
+
+volumes:
+    elymatos_lutma_persistent:
+
+
